@@ -1,69 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script> <!-- Include Firebase Authentication -->
-  <title>Topic Revision Tracker</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="script.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+  <title>Revision Tracker</title>
 </head>
 <body>
-  <header>
-    <h1>Topic Revision Tracker</h1>
-  </header>
+  <h1>Welcome to the Revision Tracker</h1>
+  <p>Keep track of your revision topics and stay organized.</p>
 
-  <main>
-    <section id="topic-entry">
-      <label for="topic">Enter today's topic:</label>
-      <input type="text" id="topic" placeholder="Enter a topic">
-      <button onclick="addTopic()">Add Topic</button>
-    </section>
+  <div id="how-it-works" class="hidden">
+    <h2>How It Works</h2>
+    <p>1. Add a topic you need to revise.</p>
+    <p>2. Check which topics you need to revise today.</p>
+    <p>3. See all your topics and their last revision dates.</p>
+    <p>4. Modify the revision date if you revise a topic.</p>
+  </div>
 
-    <section id="action-buttons">
-      <button onclick="reviseTopics()">Revise Topics</button>
-      <button onclick="showAllTopics()">Show All Topics</button>
-    </section>
+  <button onclick="toggleHowItWorks()">Show/Hide How It Works</button>
 
-    <section id="topics">
-      <h2>Topics to Revise</h2>
-      <ul id="topicsList"></ul>
+  <div>
+    <h2>Add a Topic</h2>
+    <form id="addTopicForm">
+      <label for="topic">Topic:</label>
+      <input type="text" id="topic" required>
+      <button type="submit" onclick="addTopic(); return false;">Add</button>
+    </form>
+  </div>
 
-      <h2>All Topics</h2>
-      <ul id="allTopicsList"></ul>
-    </section>
+  <div>
+    <h2>Topics to Revise Today</h2>
+    <ul id="topicsList"></ul>
+  </div>
 
-    <section id="modify-revision-date">
-      <h2>Modify Revision Date</h2>
-      <label for="modifyTopic">Select a topic to modify:</label>
-      <select id="modifyTopic"></select>
-      <label for="newDate">Enter a new revision date:</label>
-      <input type="date" id="newDate">
-      <button onclick="modifyDate()">Modify Date</button>
-    </section>
+  <div>
+    <h2>All Topics</h2>
+    <ul id="allTopicsList"></ul>
+  </div>
 
-    <section id="how-it-works">
-      <h2>How It Works</h2>
-      <p>Welcome to the Topic Revision Tracker! Here's how it works:</p>
-      <ol>
-        <li>Start by entering a topic in the input field.</li>
-        <li>Click the "Add Topic" button to add the topic to your list.</li>
-        <li>Use the "Revise Topics" button to see which topics need revision today.</li>
-        <li>Click the "Show All Topics" button to view a list of all your topics.</li>
-        <li>If you need to change the revision date for a topic, select it from the dropdown and enter a new date.</li>
-      </ol>
-      <p>The Topic Revision Tracker is based on spaced repetition, a proven method for effective learning. It suggests you revise topics at specific intervals:</p>
-      <ul>
-        <li>After 1 day</li>
-        <li>After 3 days</li>
-        <li>After 10 days</li>
-      </ul>
-      <p>Keep track of your study topics and never miss a revision date with the Topic Revision Tracker!</p>
-    </section>
-  </main>
+  <div>
+    <h2>Modify Revision Date</h2>
+    <form id="modifyDateForm">
+      <label for="modifyTopic">Select Topic:</label>
+      <select id="modifyTopic" required></select>
+      <label for="newDate">New Revision Date:</label>
+      <input type="date" id="newDate" required>
+      <button type="submit" onclick="modifyDate(); return false;">Update</button>
+    </form>
+  </div>
 
-  <footer>
-    <p>Made with ❤️ by @dhruwayush</p>
-  </footer>
+  <button onclick="showAllTopics()">Show All Topics</button>
+
+  <div>
+    <h2>Log Out</h2>
+    <button onclick="logout()">Log Out</button>
+  </div>
 </body>
 </html>
