@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
+  <script src="script.js"></script>
   <script>
-    // Firebase configuration
+    // Your Firebase configuration here
     var firebaseConfig = {
       apiKey: "AIzaSyAm4aDJ-g-UehALCEPvuzqNeLmQfUW4M8Q",
       authDomain: "revisiontracker-dc145.firebaseapp.com",
@@ -21,143 +22,32 @@
 
     var db = firebase.firestore();
   </script>
-<link rel="stylesheet" type="text/css" href="style.css">
-
   <title>Topic Revision Tracker</title>
-  <style>
-   
-  </style>
 </head>
 <body>
   <h1>Topic Revision Tracker</h1>
+  <div class="container">
+    <!-- Input field for topic -->
+    <label for="topic">Enter a topic:</label>
+    <input type="text" id="topic" placeholder="Enter a topic"><br>
 
-  <!-- Input field for topic -->
-  <label for="topic">Enter a topic:</label>
-  <input type="text" id="topic" placeholder="Enter a topic"><br>
+    <!-- Buttons to interact with topics -->
+    <button onclick="addTopic()">Add Topic</button>
+    <button onclick="reviseTopics()">Revise Topics</button>
+    <button onclick="showAllTopics()">Show All Topics</button>
 
-  <!-- Buttons to interact with topics -->
-  <button onclick="addTopic()">Add Topic</button>
-  <button onclick="reviseTopics()">Revise Topics</button>
-  <button onclick="showAllTopics()">Show All Topics</button>
+    <h2>Topics to Revise</h2>
+    <ul id="topicsList"></ul>
 
-  <h2>Topics to Revise</h2>
-  <ul id="topicsList"></ul>
+    <h2>All Topics</h2>
+    <ul id="allTopicsList"></ul>
 
-  <h2>All Topics</h2>
-  <ul id="allTopicsList"></ul>
-
-  <h2>Modify Revision Date</h2>
-  <label for="modifyTopic">Select a topic to modify:</label>
-  <select id="modifyTopic"></select>
-  <label for="newDate">Enter a new revision date:</label>
-  <input type="date" id="newDate">
-  <button onclick="modifyDate()">Modify Date</button>
-
-  <script>
-    const topics = {};
-
-    // Function to add a topic to Firestore
-    function addTopic() {
-      const topicInput = document.getElementById("topic");
-      const topic = topicInput.value;
-      const revisionDate = new Date().toISOString();
-
-      // Add the topic to Firestore
-      db.collection('topics').add({
-        topic: topic,
-        revisionDate: revisionDate,
-      })
-      .then(function(docRef) {
-        console.log('Document written with ID: ', docRef.id);
-        topicInput.value = ''; // Clear the input field
-        updateModifyTopicDropdown();
-      })
-      .catch(function(error) {
-        console.error('Error adding document: ', error);
-      });
-    }
-
-    // Function to revise topics
-    function reviseTopics() {
-      const today = new Date();
-      const topicsList = document.getElementById('topicsList');
-      topicsList.innerHTML = ''; // Clear previous results
-
-      db.collection('topics').get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            const topicData = doc.data();
-            const lastRevisionDate = new Date(topicData.revisionDate);
-            const daysSinceLastRevision = Math.floor((today - lastRevisionDate) / (1000 * 60 * 60 * 24)); // Calculate days
-            const revisionIntervals = [1, 3, 10];
-
-            if (revisionIntervals.includes(daysSinceLastRevision)) {
-              const listItem = document.createElement('li');
-              listItem.textContent = `Revise '${topicData.topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
-              topicsList.appendChild(listItem);
-            }
-          });
-        });
-    }
-
-    // Function to show all topics
-    function showAllTopics() {
-      const allTopicsList = document.getElementById('allTopicsList');
-      allTopicsList.innerHTML = ''; // Clear previous results
-
-      db.collection('topics').get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            const topicData = doc.data();
-            const listItem = document.createElement('li');
-            listItem.textContent = `'${topicData.topic}' (Last revised: ${new Date(topicData.revisionDate).toDateString()})`;
-            allTopicsList.appendChild(listItem);
-          });
-        });
-    }
-
-    // Function to update the revision date of a topic
-    function modifyDate() {
-      const modifyTopicDropdown = document.getElementById('modifyTopic');
-      const selectedTopic = modifyTopicDropdown.value;
-      const newDateInput = document.getElementById('newDate');
-      const newDate = new Date(newDateInput.value);
-
-      if (selectedTopic in topics) {
-        // Update the topic's revision date in Firestore
-        db.collection('topics').doc(topics[selectedTopic]).update({
-          revisionDate: newDate.toISOString(),
-        })
-        .then(function() {
-          console.log(`Updated revision date for '${selectedTopic}'`);
-          newDateInput.value = ''; // Clear the input field
-        })
-        .catch(function(error) {
-          console.error('Error updating document: ', error);
-        });
-      }
-    }
-
-    // Function to update the dropdown with topics
-    function updateModifyTopicDropdown() {
-      const modifyTopicDropdown = document.getElementById('modifyTopic');
-      modifyTopicDropdown.innerHTML = '';
-
-      db.collection('topics').get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            const topicData = doc.data();
-            const option = document.createElement('option');
-            option.value = topicData.topic;
-            option.textContent = topicData.topic;
-            modifyTopicDropdown.appendChild(option);
-            topics[topicData.topic] = doc.id;
-          });
-        });
-    }
-
-    // Initialize the modify topic dropdown
-    updateModifyTopicDropdown();
-  </script>
+    <h2>Modify Revision Date</h2>
+    <label for="modifyTopic">Select a topic to modify:</label>
+    <select id="modifyTopic"></select>
+    <label for="newDate">Enter a new revision date:</label>
+    <input type="date" id="newDate">
+    <button id="modifyDateButton" onclick="modifyDate()">Modify Date</button>
+  </div>
 </body>
 </html>
