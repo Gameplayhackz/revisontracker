@@ -5,8 +5,9 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="script.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
-   <!-- Add the Google Font link -->
+  <!-- Add the Google Font link -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
   <title>Topic Revision Tracker</title>
 </head>
@@ -29,10 +30,11 @@
   <label for="newDate">Enter a new revision date:</label>
   <input type="date" id="newDate">
   <button onclick="modifyDate()">Modify Date</button>
-  <h2>How It Works</h2>
-  <button onclick="toggleHowItWorks()">Toggle</button>
+  <button onclick="toggleHowItWorks()">How It Works</button>
   <section id="how-it-works" class="hidden">
+    <h2>How It Works</h2>
     <p>Welcome to the Topic Revision Tracker! Here's how it works:</p>
+  
     <ol>
       <li>Start by entering a topic in the input field.</li>
       <li>Click the "Add Topic" button to add the topic to your list.</li>
@@ -40,12 +42,15 @@
       <li>Click the "Show All Topics" button to view a list of all your topics.</li>
       <li>If you need to change the revision date for a topic, select it from the dropdown and enter a new date.</li>
     </ol>
+  
     <p>The Topic Revision Tracker is based on spaced repetition, a proven method for effective learning. It suggests you revise topics at specific intervals:</p>
+  
     <ul>
       <li>After 1 day</li>
       <li>After 3 days</li>
       <li>After 10 days</li>
     </ul>
+  
     <p>Keep track of your study topics and never miss a revision date with the Topic Revision Tracker!</p>
   </section>
   <footer>
