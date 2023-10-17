@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <!-- Add the Google Font link -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
-    <title>Sign-In</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="signin.js"></script>
+  <title>Simple Sign-In</title>
 </head>
-
 <body>
-    <h1>Sign-In</h1>
-    <form id="signInForm">
-        <label for="email">Email:</label>
-        <input type="email" id="email" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br>
-        <button type="submit">Sign In</button>
-    </form>
-
-    <p id="errorText" class="hidden"></p>
-
-    <script src="script.js"></script>
+  <h1>Simple Sign-In</h1>
+  <form id="signInForm" onsubmit="return signInUser();">
+    <label for="email">Email:</label>
+    <input type="email" id="email" required><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" required><br>
+    <button type="submit">Sign In</button>
+  </form>
+  <p id="errorText" class="hidden"></p>
 </body>
-
 </html>
