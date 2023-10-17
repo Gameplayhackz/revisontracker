@@ -1,4 +1,19 @@
-const db = firebase.firestore();
+// Firebase configuration
+var firebaseConfig = {
+  apiKey: "AIzaSyAm4aDJ-g-UehALCEPvuzqNeLmQfUW4M8Q",
+  authDomain: "revisiontracker-dc145.firebaseapp.com",
+  projectId: "revisiontracker-dc145",
+  storageBucket: "revisiontracker-dc145.appspot.com",
+  messagingSenderId: "140685845306",
+  appId: "1:140685845306:web:3861b3a78048d253c46603",
+  measurementId: "G-3CXTB499EB"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firestore after Firebase
+var db = firebase.firestore();
 const topics = {};
 
 function addTopic() {
