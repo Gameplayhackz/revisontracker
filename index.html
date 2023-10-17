@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="script.js"></script>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <!-- Add the Google Font link -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
   <title>Topic Revision Tracker</title>
 </head>
+
 <body>
   <h1>Topic Revision Tracker</h1>
-  <!-- Input field for topic -->
   <label for="topic">Enter today's topic:</label>
-  <input type="text" id="topic" placeholder="Enter a topic"><br>
-  <!-- Buttons to interact with topics -->
+  <input type="text" id="topic" placeholder="Enter a topic">
   <button onclick="addTopic()">Add Topic</button>
   <button onclick="reviseTopics()">Revise Topics</button>
   <button onclick="showAllTopics()">Show All Topics</button>
+
   <h2>Topics to Revise</h2>
   <ul id="topicsList"></ul>
+
   <h2>All Topics</h2>
-  <ul id="allTopicsList"></ul>
+  <section id="all-topics">
+    <ul id="allTopicsList"></ul>
+  </section>
+
   <h2>Modify Revision Date</h2>
-  <label for="modifyTopic">Select a topic to modify:</label>
-  <select id="modifyTopic"></select>
-  <label for="newDate">Enter a new revision date:</label>
-  <input type="date" id="newDate">
-  <button onclick="modifyDate()">Modify Date</button>
+  <section id="modify-section">
+    <label for="modifyTopic">Select a topic to modify:</label>
+    <select id="modifyTopic"></select>
+    <label for="newDate">Enter a new revision date:</label>
+    <input type="date" id="newDate">
+    <button onclick="modifyDate()">Modify Date</button>
+  </section>
+<br>
   <button onclick="toggleHowItWorks()">How It Works</button>
+
   <section id="how-it-works" class="hidden">
     <h2>How It Works</h2>
     <p>Welcome to the Topic Revision Tracker! Here's how it works:</p>
-  
+
     <ol>
       <li>Start by entering a topic in the input field.</li>
       <li>Click the "Add Topic" button to add the topic to your list.</li>
@@ -42,19 +45,26 @@
       <li>Click the "Show All Topics" button to view a list of all your topics.</li>
       <li>If you need to change the revision date for a topic, select it from the dropdown and enter a new date.</li>
     </ol>
-  
-    <p>The Topic Revision Tracker is based on spaced repetition, a proven method for effective learning. It suggests you revise topics at specific intervals:</p>
-  
+
+    <p>The Topic Revision Tracker is based on spaced repetition, a proven method for effective learning. It suggests
+      you revise topics at specific intervals:</p>
+
     <ul>
       <li>After 1 day</li>
       <li>After 3 days</li>
       <li>After 10 days</li>
     </ul>
-  
+
     <p>Keep track of your study topics and never miss a revision date with the Topic Revision Tracker!</p>
   </section>
+
   <footer>
     <p>Made with ❤️ by @dhruwayush</p>
   </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>
