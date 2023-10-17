@@ -1,16 +1,24 @@
-/* Your CSS styles here */
+/* Reset some default styles for consistency */
+body, h1, ul {
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 20px;
 }
+
 h1 {
   color: #333;
   text-align: center;
 }
+
 label, select, input {
   display: block;
   margin: 10px 0;
 }
+
 button {
   background-color: #007BFF;
   color: #fff;
@@ -18,13 +26,54 @@ button {
   padding: 10px 20px;
   cursor: pointer;
 }
+
 button:hover {
   background-color: #0056b3;
 }
+
 h2 {
   margin-top: 20px;
 }
+
 ul {
   list-style: none;
   padding: 0;
+}
+
+/* Style the All Topics section */
+#all-topics {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+/* Style the list items within the All Topics section */
+#allTopicsList li {
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#allTopicsList li:hover {
+  background-color: #f7f7f7;
+}
+
+/* Style the Modify Revision Date section */
+#modify-section {
+  margin-top: 20px;
+}
+
+/* Style the How It Works section */
+#how-it-works {
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Style the Footer */
+footer {
+  font-family: 'Roboto', sans-serif;
 }
