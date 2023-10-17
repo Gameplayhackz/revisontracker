@@ -3,7 +3,13 @@ const topics = {};
 
 function addTopic() {
   const topicInput = document.getElementById("topic");
-  const topic = topicInput.value;
+  const topic = topicInput.value.trim(); // Trim removes leading and trailing whitespace
+
+  if (topic === "") {
+    alert("Topic cannot be empty");
+    return; // Don't proceed if the input is empty
+  }
+
   const revisionDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
 
   // Add the topic to Firestore
