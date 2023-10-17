@@ -19,6 +19,7 @@ const topics = {};
 // Initialize Firebase Authentication
 const auth = firebase.auth();
 
+// Function to add a topic
 function addTopic() {
   const topicInput = document.getElementById("topic");
   const topic = topicInput.value.trim(); // Trim removes leading/trailing spaces
@@ -46,6 +47,7 @@ function addTopic() {
   }
 }
 
+// Function to revise topics
 function reviseTopics() {
   const today = new Date();
   const topicsList = document.getElementById('topicsList');
@@ -68,6 +70,7 @@ function reviseTopics() {
   });
 }
 
+// Function to show all topics
 function showAllTopics() {
   const allTopicsList = document.getElementById('allTopicsList');
   allTopicsList.innerHTML = '';
@@ -83,6 +86,7 @@ function showAllTopics() {
   });
 }
 
+// Function to modify a topic's revision date
 function modifyDate() {
   const modifyTopicDropdown = document.getElementById('modifyTopic');
   const selectedTopic = modifyTopicDropdown.value;
@@ -103,6 +107,7 @@ function modifyDate() {
   }
 }
 
+// Function to update the modification dropdown with topic names
 function updateModifyTopicDropdown() {
   const modifyTopicDropdown = document.getElementById('modifyTopic');
   modifyTopicDropdown.innerHTML = '';
@@ -122,6 +127,7 @@ function updateModifyTopicDropdown() {
 
 updateModifyTopicDropdown();
 
+// Function to toggle the "How It Works" section
 function toggleHowItWorks() {
   var howItWorksSection = document.getElementById('how-it-works');
   if (howItWorksSection.classList.contains('hidden')) {
@@ -131,6 +137,55 @@ function toggleHowItWorks() {
   }
 }
 
+// Sign-Up Function
+function signUpUser() {
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(function(user) {
+      // Sign-up successful
+      window.location.href = "dashboard.html"; // Redirect to the dashboard page after signing up
+    })
+    .catch(function(error) {
+      // Handle sign-up errors (e.g., display error message)
+      const errorText = document.getElementById("errorText");
+      errorText.textContent = error.message;
+      errorText.classList.remove("hidden");
+    });
+
+  // Prevent the form from submitting (this is done automatically by Firebase)
+  return false;
+}
+
+// Sign-In Function
+function signInUser() {
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then(function(user) {
+      // Sign-in successful
+      window.location.href = "dashboard.html"; // Redirect to the dashboard page after signing in
+    })
+    .catch(function(error) {
+      // Handle sign-in errors (e.g., display error message)
+      const errorText = document.getElementById("errorText");
+      errorText.textContent = error.message;
+      errorText.classList.remove("hidden");
+    });
+
+  // Prevent the form from submitting (this is done automatically by Firebase)
+  return false;
+}
+
+// Logout Function
 function logout() {
   auth.signOut().then(function() {
     // Sign-out successful
@@ -138,5 +193,5 @@ function logout() {
   }).catch(function(error) {
     // An error occurred during sign-out
     console.error(error);
-  });
+  }
 }
