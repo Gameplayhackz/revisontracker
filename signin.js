@@ -1,4 +1,4 @@
-// Firebase configuration (use your own configuration)
+// Firebase configuration
 var firebaseConfig = {
   apiKey: "AIzaSyAm4aDJ-g-UehALCEPvuzqNeLmQfUW4M8Q",
   authDomain: "revisiontracker-dc145.firebaseapp.com",
@@ -28,8 +28,8 @@ function signInUser() {
     auth.signInWithEmailAndPassword(email, password)
       .then(function() {
         // User sign-in successful
-        // You can add a success message or redirect to another page here
-        alert("User signed in successfully!");
+        // Redirect to index.html on successful login
+        window.location.href = "index.html";
       })
       .catch(function(error) {
         // Handle sign-in errors (e.g., display error message)
