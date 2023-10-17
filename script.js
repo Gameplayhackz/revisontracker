@@ -16,6 +16,9 @@ firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 const topics = {};
 
+// Initialize Firebase Authentication
+const auth = firebase.auth();
+
 function addTopic() {
   const topicInput = document.getElementById("topic");
   const topic = topicInput.value.trim(); // Trim removes leading/trailing spaces
@@ -126,4 +129,14 @@ function toggleHowItWorks() {
   } else {
     howItWorksSection.classList.add('hidden');
   }
+}
+
+function logout() {
+  auth.signOut().then(function() {
+    // Sign-out successful
+    window.location.href = "signin.html"; // Redirect to the Sign-In page after logging out
+  }).catch(function(error) {
+    // An error occurred during sign-out
+    console.error(error);
+  });
 }
