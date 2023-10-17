@@ -118,3 +118,12 @@ function updateModifyTopicDropdown() {
 }
 
 updateModifyTopicDropdown();
+
+function toggleHowItWorks() {
+  var howItWorksSection = document.getElementById('how-it-works');
+  if (howItWorksSection.classList.contains('hidden')) {
+    howItWorksSection.classList.remove('hidden');
+  } else {
+    howItWorksSection.classList.add('hidden');
+  }
+}
