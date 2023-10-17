@@ -1,86 +1,154 @@
-/* Reset CSS */
-html, body, div, h1, h2, h3, p, ul, ol, li, label, select, input, button {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5;
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
   margin: 20px;
 }
 
 h1 {
   color: #333;
-  text-align: center;
-  margin: 20px 0;
+  font-size: 28px;
 }
 
-label, select, input {
-  display: block;
-  margin: 10px 0;
+p {
+  color: #555;
+}
+
+.hidden {
+  display: none;
 }
 
 button {
   background-color: #007BFF;
   color: #fff;
-  border: none;
   padding: 10px 20px;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 16px;
+  margin: 5px;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
-h2 {
-  margin-top: 20px;
+form {
+  margin: 10px 0;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="password"],
+select {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
 }
 
 ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
 }
 
-/* All Topics Section */
-#all-topics {
-  background-color: #f2f2f2;
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 20px;
+li {
+  margin: 5px 0;
 }
 
-#all-topics ul {
-  list-style: none;
-  padding: 0;
+/* How It Works button styling */
+button#toggleHowItWorks {
+  background-color: #555;
 }
 
-#all-topics li {
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
+/* Log Out button styling */
+button#logoutButton {
+  background-color: #ff4d4d;
 }
 
-#all-topics li:hover {
-  background-color: #f7f7f7;
-}
-
-/* How It Works Section */
-#how-it-works {
-  background-color: #fff;
-  border: 1px solid #ccc;
+/* Header background color */
+h1 {
+  background-color: #007BFF;
+  color: #fff;
   padding: 20px;
+  margin: 0;
+}
+
+/* Additional styling for the main content section */
+#mainContent {
+  text-align: left;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+/* Styling for the how-it-works section */
+#howItWorks {
   margin-top: 20px;
 }
 
-/* Hide the How It Works section initially */
-#how-it-works.hidden {
-  display: none;
+/* Styling for the Add Topic form */
+#addTopicForm {
+  margin-bottom: 20px;
+}
+
+/* Styling for the Revise Topic list */
+#topicsList {
+  padding: 0;
+  margin: 0;
+}
+
+/* Styling for the Modify Topic form */
+#modifyDateForm {
+  margin-top: 20px;
+}
+
+/* Styling for the topic lists */
+ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+/* Styling for list items */
+li {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #f9f9f9;
+}
+
+/* Styling for individual topics */
+.topic-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Styling for the Modify Revision Date form */
+#modifyDateForm label {
+  display: block;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+/* Styling for Log Out button */
+#logoutButton {
+  background-color: #ff4d4d;
+  margin-top: 10px;
+}
+
+/* Styling for error messages */
+#errorText {
+  color: #ff0000;
+  font-weight: bold;
+  margin-top: 5px;
 }
