@@ -87,16 +87,21 @@ li {
   .container {
     padding: 15px;
   }
+  h1 {
+    font-size: 24px;
+  }
 }
 
 @media screen and (max-width: 480px) {
   h1 {
-    font-size: 24px;
+    font-size: 20px;
   }
   label, input, select {
+    padding: 8px;
     font-size: 14px;
   }
   button {
+    padding: 10px;
     font-size: 16px;
   }
   .container {
