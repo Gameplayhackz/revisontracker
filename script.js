@@ -138,5 +138,28 @@ function logout() {
   }).catch(function(error) {
     // An error occurred during sign-out
     console.error(error);
-  });
-}
+  }
+
+// Handle Sign-In
+const signInForm = document.getElementById('signInForm');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const signInErrorText = document.getElementById('signInErrorText');
+
+signInForm.addEventListener('submit', function (e) {
+  e.preventDefault(); // Prevent the form from submitting the traditional way.
+
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Sign-in successful, user is now signed in.
+      window.location.href = "dashboard.html"; // Redirect to a dashboard or protected page.
+    })
+    .catch((error) => {
+      // Handle sign-in errors, and display an error message to the user.
+      signInErrorText.textContent = error.message;
+      signInErrorText.classList.remove('hidden');
+    });
+});
