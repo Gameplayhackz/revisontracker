@@ -1,6 +1,4 @@
-const db = firebase.firestore();
-const topics = {};
-
+// Function to add a topic to Firestore
 function addTopic() {
   const topicInput = document.getElementById("topic");
   const topic = topicInput.value.trim(); // Trim removes leading and trailing whitespace
@@ -72,19 +70,27 @@ function modifyDate() {
   const newDateInput = document.getElementById('newDate');
   const newDate = newDateInput.value;
 
-  if (selectedTopic in topics) {
-    // Update the topic's revision date in Firestore
-    db.collection('your-collection').doc(topics[selectedTopic]).update({
-      revisionDate: newDate,
-    })
-    .then(function() {
-      console.log(`Updated revision date for '${selectedTopic}'`);
-      newDateInput.value = ''; // Clear the input field
-    })
-    .catch(function(error) {
-      console.error('Error updating document: ', error);
-    });
+  if (selectedTopic === "") {
+    alert("Select a topic to modify");
+    return; // Don't proceed if no topic is selected
   }
+
+  // Update the topic's revision date in Firestore
+  db.collection('your-collection').where("topic", "==", selectedTopic).get()
+    .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        db.collection('your-collection').doc(doc.id).update({
+          revisionDate: newDate,
+        })
+        .then(function() {
+          console.log(`Updated revision date for '${selectedTopic}'`);
+          newDateInput.value = ''; // Clear the input field
+        })
+        .catch(function(error) {
+          console.error('Error updating document: ', error);
+        });
+      });
+    });
 }
 
 // Function to update the dropdown with topics
@@ -100,7 +106,6 @@ function updateModifyTopicDropdown() {
         option.value = topicData.topic;
         option.textContent = topicData.topic;
         modifyTopicDropdown.appendChild(option);
-        topics[topicData.topic] = doc.id;
       });
     });
 }
