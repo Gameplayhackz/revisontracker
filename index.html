@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <script>
+    // Your Firebase configuration here
+    var firebaseConfig = {
+      apiKey: "AIzaSyAm4aDJ-g-UehALCEPvuzqNeLmQfUW4M8Q",
+      authDomain: "revisiontracker-dc145.firebaseapp.com",
+      projectId: "revisiontracker-dc145",
+      storageBucket: "revisiontracker-dc145.appspot.com",
+      messagingSenderId: "140685845306",
+      appId: "1:140685845306:web:3861b3a78048d253c46603",
+      measurementId: "G-3CXTB499EB"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    var db = firebase.firestore();
+  </script>
+
   <title>Topic Revision Tracker</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-
-    h1 {
-      color: #333;
-      text-align: center;
-    }
-
-    label, select, input {
-      display: block;
-      margin: 10px 0;
-    }
-
-    button {
-      background-color: #007BFF;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    h2 {
-      margin-top: 20px;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
+    /* Your CSS styles here */
   </style>
 </head>
 <body>
   <h1>Topic Revision Tracker</h1>
-  
+
+  <!-- Input field for topic -->
   <label for="topic">Enter a topic:</label>
   <input type="text" id="topic" placeholder="Enter a topic"><br>
 
+  <!-- Buttons to interact with topics -->
   <button onclick="addTopic()">Add Topic</button>
   <button onclick="reviseTopics()">Revise Topics</button>
   <button onclick="showAllTopics()">Show All Topics</button>
@@ -64,67 +53,111 @@
   <button onclick="modifyDate()">Modify Date</button>
 
   <script>
-    const topics = {};
+  const db = firebase.firestore();
+  const topics = {};
 
-    function addTopic() {
-      const topicInput = document.getElementById("topic");
-      const topic = topicInput.value;
-      topics[topic] = new Date();
-      topicInput.value = "";
-      updateModifyTopicDropdown();
+  // Function to add a topic to Firestore
+  function addTopic() {
+    const topicInput = document.getElementById("topic");
+    const topic = topicInput.value;
+    const revisionDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+
+    // Add the topic to Firestore
+    db.collection('your-collection').add({
+      topic: topic,
+      revisionDate: revisionDate,
+    })
+    .then(function(docRef) {
+      console.log('Document written with ID: ', docRef.id);
+      topicInput.value = ''; // Clear the input field
+    })
+    .catch(function(error) {
+      console.error('Error adding document: ', error);
+    });
+  }
+
+  // Function to revise topics
+  function reviseTopics() {
+    const today = new Date();
+    const topicsList = document.getElementById('topicsList');
+    topicsList.innerHTML = ''; // Clear previous results
+
+    db.collection('your-collection').get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          const topicData = doc.data();
+          const lastRevisionDate = new Date(topicData.revisionDate);
+          const daysSinceLastRevision = Math.floor((today - lastRevisionDate) / (1000 * 60 * 60 * 24)); // Calculate days
+          const revisionIntervals = [1, 3, 10];
+
+          if (revisionIntervals.includes(daysSinceLastRevision)) {
+            const listItem = document.createElement('li');
+            listItem.textContent = `Revise '${topicData.topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
+            topicsList.appendChild(listItem);
+          }
+        });
+      });
+  }
+
+  // Function to show all topics
+  function showAllTopics() {
+    const allTopicsList = document.getElementById('allTopicsList');
+    allTopicsList.innerHTML = ''; // Clear previous results
+
+    db.collection('your-collection').get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          const topicData = doc.data();
+          const listItem = document.createElement('li');
+          listItem.textContent = `'${topicData.topic}' (Last revised: ${new Date(topicData.revisionDate).toDateString()})`;
+          allTopicsList.appendChild(listItem);
+        });
+      });
+  }
+
+  // Function to update the revision date of a topic
+  function modifyDate() {
+    const modifyTopicDropdown = document.getElementById('modifyTopic');
+    const selectedTopic = modifyTopicDropdown.value;
+    const newDateInput = document.getElementById('newDate');
+    const newDate = newDateInput.value;
+
+    if (selectedTopic in topics) {
+      // Update the topic's revision date in Firestore
+      db.collection('your-collection').doc(topics[selectedTopic]).update({
+        revisionDate: newDate,
+      })
+      .then(function() {
+        console.log(`Updated revision date for '${selectedTopic}'`);
+        newDateInput.value = ''; // Clear the input field
+      })
+      .catch(function(error) {
+        console.error('Error updating document: ', error);
+      });
     }
+  }
 
-    function reviseTopics() {
-      const today = new Date();
-      const topicsList = document.getElementById("topicsList");
-      topicsList.innerHTML = ""; // Clear previous results
+  // Function to update the dropdown with topics
+  function updateModifyTopicDropdown() {
+    const modifyTopicDropdown = document.getElementById('modifyTopic');
+    modifyTopicDropdown.innerHTML = '';
 
-      for (const topic in topics) {
-        const lastRevisionDate = new Date(topics[topic]);
-        const daysSinceLastRevision = Math.floor((today - lastRevisionDate) / (1000 * 60 * 60 * 24)); // Calculate days
-        const revisionIntervals = [1, 3, 10];
+    db.collection('your-collection').get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          const topicData = doc.data();
+          const option = document.createElement('option');
+          option.value = topicData.topic;
+          option.textContent = topicData.topic;
+          modifyTopicDropdown.appendChild(option);
+          topics[topicData.topic] = doc.id;
+        });
+      });
+  }
 
-        if (revisionIntervals.includes(daysSinceLastRevision)) {
-          const listItem = document.createElement("li");
-          listItem.textContent = `Revise '${topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
-          topicsList.appendChild(listItem);
-        }
-      }
-    }
+  // Initialize the modify topic dropdown
+  updateModifyTopicDropdown();
+</script>
 
-    function showAllTopics() {
-      const allTopicsList = document.getElementById("allTopicsList");
-      allTopicsList.innerHTML = ""; // Clear previous results
-
-      for (const topic in topics) {
-        const lastRevisionDate = new Date(topics[topic]);
-        const listItem = document.createElement("li");
-        listItem.textContent = `'${topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
-        allTopicsList.appendChild(listItem);
-      }
-    }
-
-    function updateModifyTopicDropdown() {
-      const modifyTopicDropdown = document.getElementById("modifyTopic");
-      modifyTopicDropdown.innerHTML = "";
-      for (const topic in topics) {
-        const option = document.createElement("option");
-        option.value = topic;
-        option.textContent = topic;
-        modifyTopicDropdown.appendChild(option);
-      }
-    }
-
-    function modifyDate() {
-      const modifyTopicDropdown = document.getElementById("modifyTopic");
-      const selectedTopic = modifyTopicDropdown.value;
-      const newDateInput = document.getElementById("newDate");
-      const newDate = new Date(newDateInput.value);
-      if (selectedTopic in topics) {
-        topics[selectedTopic] = newDate;
-        newDateInput.value = "";
-      }
-    }
-  </script>
 </body>
 </html>
