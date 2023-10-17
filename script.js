@@ -26,19 +26,18 @@ function addTopic() {
 
     // Add the topic to Firestore
     db.collection('topics').add({
-      topic: topic,
-      revisionDate: revisionDate,
-    })
-    .then(function(docRef) {
-      console.log('Document written with ID: ', docRef.id);
-      topicInput.value = ''; // Clear the input field
-      updateModifyTopicDropdown();
-    })
-    .catch(function(error) {
-      console.error('Error adding document: ', error);
-    });
-  }
-  else {
+        topic: topic,
+        revisionDate: revisionDate,
+      })
+      .then(function(docRef) {
+        console.log('Document written with ID: ', docRef.id);
+        topicInput.value = ''; // Clear the input field
+        updateModifyTopicDropdown();
+      })
+      .catch(function(error) {
+        console.error('Error adding document: ', error);
+      });
+  } else {
     // Display an error message or handle it as needed
     alert("Topic cannot be empty.");
   }
@@ -89,15 +88,15 @@ function modifyDate() {
 
   if (selectedTopic in topics) {
     db.collection('topics').doc(topics[selectedTopic]).update({
-      revisionDate: newDate,
-    })
-    .then(function() {
-      console.log(`Updated revision date for '${selectedTopic}'`);
-      newDateInput.value = '';
-    })
-    .catch(function(error) {
-      console.error('Error updating document: ', error);
-    });
+        revisionDate: newDate,
+      })
+      .then(function() {
+        console.log(`Updated revision date for '${selectedTopic}'`);
+        newDateInput.value = '';
+      })
+      .catch(function(error) {
+        console.error('Error updating document: ', error);
+      });
   }
 }
 
