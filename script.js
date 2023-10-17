@@ -29,17 +29,17 @@ function addTopic() {
 
     // Add the topic to Firestore
     db.collection('topics').add({
-        topic: topic,
-        revisionDate: revisionDate,
-      })
-      .then(function(docRef) {
-        console.log('Document written with ID: ', docRef.id);
-        topicInput.value = ''; // Clear the input field
-        updateModifyTopicDropdown();
-      })
-      .catch(function(error) {
-        console.error('Error adding document: ', error);
-      });
+      topic: topic,
+      revisionDate: revisionDate,
+    })
+    .then(function(docRef) {
+      console.log('Document written with ID: ', docRef.id);
+      topicInput.value = ''; // Clear the input field
+      updateModifyTopicDropdown();
+    })
+    .catch(function(error) {
+      console.error('Error adding document: ', error);
+    });
   } else {
     // Display an error message or handle it as needed
     alert("Topic cannot be empty.");
@@ -52,20 +52,20 @@ function reviseTopics() {
   topicsList.innerHTML = '';
 
   db.collection('topics').get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        const topicData = doc.data();
-        const lastRevisionDate = new Date(topicData.revisionDate);
-        const daysSinceLastRevision = Math.floor((today - lastRevisionDate) / (1000 * 60 * 60 * 24));
-        const revisionIntervals = [1, 3, 10];
+  .then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      const topicData = doc.data();
+      const lastRevisionDate = new Date(topicData.revisionDate);
+      const daysSinceLastRevision = Math.floor((today - lastRevisionDate) / (1000 * 60 * 60 * 24));
+      const revisionIntervals = [1, 3, 10];
 
-        if (revisionIntervals.includes(daysSinceLastRevision)) {
-          const listItem = document.createElement('li');
-          listItem.textContent = `Revise '${topicData.topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
-          topicsList.appendChild(listItem);
-        }
-      });
+      if (revisionIntervals.includes(daysSinceLastRevision)) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Revise '${topicData.topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
+        topicsList.appendChild(listItem);
+      }
     });
+  });
 }
 
 function showAllTopics() {
@@ -73,14 +73,14 @@ function showAllTopics() {
   allTopicsList.innerHTML = '';
 
   db.collection('topics').get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        const topicData = doc.data();
-        const listItem = document.createElement('li');
-        listItem.textContent = `'${topicData.topic}' (Last revised: ${new Date(topicData.revisionDate).toDateString()})`;
-        allTopicsList.appendChild(listItem);
-      });
+  .then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      const topicData = doc.data();
+      const listItem = document.createElement('li');
+      listItem.textContent = `'${topicData.topic}' (Last revised: ${new Date(topicData.revisionDate).toDateString()})`;
+      allTopicsList.appendChild(listItem);
     });
+  });
 }
 
 function modifyDate() {
@@ -91,15 +91,15 @@ function modifyDate() {
 
   if (selectedTopic in topics) {
     db.collection('topics').doc(topics[selectedTopic]).update({
-        revisionDate: newDate,
-      })
-      .then(function() {
-        console.log(`Updated revision date for '${selectedTopic}'`);
-        newDateInput.value = '';
-      })
-      .catch(function(error) {
-        console.error('Error updating document: ', error);
-      });
+      revisionDate: newDate,
+    })
+    .then(function() {
+      console.log(`Updated revision date for '${selectedTopic}'`);
+      newDateInput.value = '';
+    })
+    .catch(function(error) {
+      console.error('Error updating document: ', error);
+    });
   }
 }
 
@@ -108,16 +108,16 @@ function updateModifyTopicDropdown() {
   modifyTopicDropdown.innerHTML = '';
 
   db.collection('topics').get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        const topicData = doc.data();
-        const option = document.createElement('option');
-        option.value = topicData.topic;
-        option.textContent = topicData.topic;
-        modifyTopicDropdown.appendChild(option);
-        topics[topicData.topic] = doc.id;
-      });
+  .then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      const topicData = doc.data();
+      const option = document.createElement('option');
+      option.value = topicData.topic;
+      option.textContent = topicData.topic;
+      modifyTopicDropdown.appendChild(option);
+      topics[topicData.topic] = doc.id;
     });
+  });
 }
 
 updateModifyTopicDropdown();
@@ -138,28 +138,5 @@ function logout() {
   }).catch(function(error) {
     // An error occurred during sign-out
     console.error(error);
-  }
-
-// Handle Sign-In
-const signInForm = document.getElementById('signInForm');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-const signInErrorText = document.getElementById('signInErrorText');
-
-signInForm.addEventListener('submit', function (e) {
-  e.preventDefault(); // Prevent the form from submitting the traditional way.
-
-  const email = emailInput.value;
-  const password = passwordInput.value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Sign-in successful, user is now signed in.
-      window.location.href = "dashboard.html"; // Redirect to a dashboard or protected page.
-    })
-    .catch((error) => {
-      // Handle sign-in errors, and display an error message to the user.
-      signInErrorText.textContent = error.message;
-      signInErrorText.classList.remove('hidden');
-    });
-});
+  });
+}
