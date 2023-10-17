@@ -14,19 +14,19 @@ firebase.initializeApp(firebaseConfig);
 
 // Initialize Firestore after Firebase
 var db = firebase.firestore();
-const topics = {};
+var topics = {};
 
 // Initialize Firebase Authentication
-const auth = firebase.auth();
+var auth = firebase.auth();
 
 // Function to add a topic
 function addTopic() {
-  const topicInput = document.getElementById("topic");
-  const topic = topicInput.value.trim(); // Trim removes leading/trailing spaces
+  var topicInput = document.getElementById("topic");
+  var topic = topicInput.value.trim(); // Trim removes leading/trailing spaces
 
   // Check if the topic is not empty
   if (topic) {
-    const revisionDate = new Date().toISOString();
+    var revisionDate = new Date().toISOString();
 
     // Add the topic to Firestore
     db.collection('topics').add({
@@ -49,21 +49,21 @@ function addTopic() {
 
 // Function to revise topics
 function reviseTopics() {
-  const today = new Date();
-  const topicsList = document.getElementById('topicsList');
+  var today = new Date();
+  var topicsList = document.getElementById('topicsList');
   topicsList.innerHTML = '';
 
   db.collection('topics').get()
   .then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-      const topicData = doc.data();
-      const lastRevisionDate = new Date(topicData.revisionDate);
-      const daysSinceLastRevision = Math.floor((today - lastRevisionDate) / (1000 * 60 * 60 * 24));
-      const revisionIntervals = [1, 3, 10];
+      var topicData = doc.data();
+      var lastRevisionDate = new Date(topicData.revisionDate);
+      var daysSinceLastRevision = Math.floor((today - lastRevisionDate) / (1000 * 60 * 60 * 24));
+      var revisionIntervals = [1, 3, 10];
 
       if (revisionIntervals.includes(daysSinceLastRevision)) {
-        const listItem = document.createElement('li');
-        listItem.textContent = `Revise '${topicData.topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
+        var listItem = document.createElement('li');
+        listItem.textContent = 'Revise ' + topicData.topic + ' (Last revised: ' + lastRevisionDate.toDateString() + ')';
         topicsList.appendChild(listItem);
       }
     });
@@ -72,15 +72,15 @@ function reviseTopics() {
 
 // Function to show all topics
 function showAllTopics() {
-  const allTopicsList = document.getElementById('allTopicsList');
+  var allTopicsList = document.getElementById('allTopicsList');
   allTopicsList.innerHTML = '';
 
   db.collection('topics').get()
   .then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-      const topicData = doc.data();
-      const listItem = document.createElement('li');
-      listItem.textContent = `'${topicData.topic}' (Last revised: ${new Date(topicData.revisionDate).toDateString()})`;
+      var topicData = doc.data();
+      var listItem = document.createElement('li');
+      listItem.textContent = "'" + topicData.topic + "' (Last revised: " + new Date(topicData.revisionDate).toDateString() + ')';
       allTopicsList.appendChild(listItem);
     });
   });
@@ -88,17 +88,17 @@ function showAllTopics() {
 
 // Function to modify a topic's revision date
 function modifyDate() {
-  const modifyTopicDropdown = document.getElementById('modifyTopic');
-  const selectedTopic = modifyTopicDropdown.value;
-  const newDateInput = document.getElementById('newDate');
-  const newDate = newDateInput.value;
+  var modifyTopicDropdown = document.getElementById('modifyTopic');
+  var selectedTopic = modifyTopicDropdown.value;
+  var newDateInput = document.getElementById('newDate');
+  var newDate = newDateInput.value;
 
   if (selectedTopic in topics) {
     db.collection('topics').doc(topics[selectedTopic]).update({
       revisionDate: newDate,
     })
     .then(function() {
-      console.log(`Updated revision date for '${selectedTopic}'`);
+      console.log('Updated revision date for ' + selectedTopic);
       newDateInput.value = '';
     })
     .catch(function(error) {
@@ -109,14 +109,14 @@ function modifyDate() {
 
 // Function to update the modification dropdown with topic names
 function updateModifyTopicDropdown() {
-  const modifyTopicDropdown = document.getElementById('modifyTopic');
+  var modifyTopicDropdown = document.getElementById('modifyTopic');
   modifyTopicDropdown.innerHTML = '';
 
   db.collection('topics').get()
   .then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-      const topicData = doc.data();
-      const option = document.createElement('option');
+      var topicData = doc.data();
+      var option = document.createElement('option');
       option.value = topicData.topic;
       option.textContent = topicData.topic;
       modifyTopicDropdown.appendChild(option);
@@ -137,13 +137,24 @@ function toggleHowItWorks() {
   }
 }
 
+// Function to log out the user
+function logout() {
+  auth.signOut().then(function() {
+    // Sign-out successful
+    window.location.href = "signin.html"; // Redirect to the Sign-In page after logging out
+  }).catch(function(error) {
+    // An error occurred during sign-out
+    console.error(error);
+  });
+}
+
 // Sign-Up Function
 function signUpUser() {
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
+  var emailInput = document.getElementById("email");
+  var passwordInput = document.getElementById("password");
 
-  const email = emailInput.value;
-  const password = passwordInput.value;
+  var email = emailInput.value;
+  var password = passwordInput.value;
 
   auth.createUserWithEmailAndPassword(email, password)
     .then(function(user) {
@@ -152,7 +163,7 @@ function signUpUser() {
     })
     .catch(function(error) {
       // Handle sign-up errors (e.g., display error message)
-      const errorText = document.getElementById("errorText");
+      var errorText = document.getElementById("errorText");
       errorText.textContent = error.message;
       errorText.classList.remove("hidden");
     });
@@ -163,11 +174,11 @@ function signUpUser() {
 
 // Sign-In Function
 function signInUser() {
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
+  var emailInput = document.getElementById("email");
+  var passwordInput = document.getElementById("password");
 
-  const email = emailInput.value;
-  const password = passwordInput.value;
+  var email = emailInput.value;
+  var password = passwordInput.value;
 
   auth.signInWithEmailAndPassword(email, password)
     .then(function(user) {
@@ -176,22 +187,11 @@ function signInUser() {
     })
     .catch(function(error) {
       // Handle sign-in errors (e.g., display error message)
-      const errorText = document.getElementById("errorText");
+      var errorText = document.getElementById("errorText");
       errorText.textContent = error.message;
       errorText.classList.remove("hidden");
     });
 
   // Prevent the form from submitting (this is done automatically by Firebase)
   return false;
-}
-
-// Logout Function
-function logout() {
-  auth.signOut().then(function() {
-    // Sign-out successful
-    window.location.href = "signin.html"; // Redirect to the Sign-In page after logging out
-  }).catch(function(error) {
-    // An error occurred during sign-out
-    console.error(error);
-  }
 }
