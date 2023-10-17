@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Topic Revision Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    label, select, input {
+      display: block;
+      margin: 10px 0;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Topic Revision Tracker</h1>
+  
+  <label for="topic">Enter a topic:</label>
+  <input type="text" id="topic" placeholder="Enter a topic"><br>
+
+  <button onclick="addTopic()">Add Topic</button>
+  <button onclick="reviseTopics()">Revise Topics</button>
+  <button onclick="showAllTopics()">Show All Topics</button>
+
+  <h2>Topics to Revise</h2>
+  <ul id="topicsList"></ul>
+
+  <h2>All Topics</h2>
+  <ul id="allTopicsList"></ul>
+
+  <h2>Modify Revision Date</h2>
+  <label for="modifyTopic">Select a topic to modify:</label>
+  <select id="modifyTopic"></select>
+  <label for="newDate">Enter a new revision date:</label>
+  <input type="date" id="newDate">
+  <button onclick="modifyDate()">Modify Date</button>
+
+  <script>
+    const topics = {};
+
+    function addTopic() {
+      const topicInput = document.getElementById("topic");
+      const topic = topicInput.value;
+      topics[topic] = new Date();
+      topicInput.value = "";
+      updateModifyTopicDropdown();
+    }
+
+    function reviseTopics() {
+      const today = new Date();
+      const topicsList = document.getElementById("topicsList");
+      topicsList.innerHTML = ""; // Clear previous results
+
+      for (const topic in topics) {
+        const lastRevisionDate = new Date(topics[topic]);
+        const daysSinceLastRevision = Math.floor((today - lastRevisionDate) / (1000 * 60 * 60 * 24)); // Calculate days
+        const revisionIntervals = [1, 3, 10];
+
+        if (revisionIntervals.includes(daysSinceLastRevision)) {
+          const listItem = document.createElement("li");
+          listItem.textContent = `Revise '${topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
+          topicsList.appendChild(listItem);
+        }
+      }
+    }
+
+    function showAllTopics() {
+      const allTopicsList = document.getElementById("allTopicsList");
+      allTopicsList.innerHTML = ""; // Clear previous results
+
+      for (const topic in topics) {
+        const lastRevisionDate = new Date(topics[topic]);
+        const listItem = document.createElement("li");
+        listItem.textContent = `'${topic}' (Last revised: ${lastRevisionDate.toDateString()})`;
+        allTopicsList.appendChild(listItem);
+      }
+    }
+
+    function updateModifyTopicDropdown() {
+      const modifyTopicDropdown = document.getElementById("modifyTopic");
+      modifyTopicDropdown.innerHTML = "";
+      for (const topic in topics) {
+        const option = document.createElement("option");
+        option.value = topic;
+        option.textContent = topic;
+        modifyTopicDropdown.appendChild(option);
+      }
+    }
+
+    function modifyDate() {
+      const modifyTopicDropdown = document.getElementById("modifyTopic");
+      const selectedTopic = modifyTopicDropdown.value;
+      const newDateInput = document.getElementById("newDate");
+      const newDate = new Date(newDateInput.value);
+      if (selectedTopic in topics) {
+        topics[selectedTopic] = newDate;
+        newDateInput.value = "";
+      }
+    }
+  </script>
+</body>
+</html>
